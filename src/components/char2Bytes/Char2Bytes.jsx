@@ -51,7 +51,7 @@ const Char2Bytes = () => {
                         disabled
                     />
                     <button
-                        class="btn btn-outline-secondary"
+                        className="btn btn-outline-secondary"
                         type="button"
                         id="button-addon2"
                         onClick={copyText}
