@@ -1,4 +1,3 @@
-import { ProtocolNotSupported } from '@taquito/tzip16';
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
@@ -11,9 +10,7 @@ const Card = (props) => {
                 <img src={props.img} className="card-img-top" alt="..." />
                 <div className="card-body">
                     <h5 className="card-title">{props.name}</h5>
-                    <p className="card-text">
-                        {props.description}
-                    </p>
+                    <p className="card-text">{props.description}</p>
                 </div>
             </div>
         </div>
@@ -43,7 +40,7 @@ const Home = () => {
                 }
             }
             setNfts(tokens);
-            setDone(done);
+            setDone(true);
         };
         if (loaded) {
             func();
@@ -53,10 +50,9 @@ const Home = () => {
     return (
         <div>
             <div className="row row-cols-1 row-cols-md-3 g-4">
-                {nfts.map((nft) => {
-                    return <Card {...nft} />
+                {nfts.map((nft, index) => {
+                    return <Card {...nft} key={index} />;
                 })}
-                
             </div>
         </div>
     );
