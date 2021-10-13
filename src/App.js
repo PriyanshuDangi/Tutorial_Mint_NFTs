@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';

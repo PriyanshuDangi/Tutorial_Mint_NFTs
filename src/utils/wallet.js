@@ -36,7 +36,6 @@ const getPKH = async () => {
 
 const getContract = async () => {
     const contract = await Tezos.wallet.at(config.CONTRACT_ADDRESS);
-    // console.log(contract);
     return contract;
 };
 

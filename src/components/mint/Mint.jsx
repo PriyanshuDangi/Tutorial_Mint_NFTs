@@ -1,27 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {uploadToIpfs} from '../../utils/upload';
 
-import {getNFTs, mintNFT} from '../../utils/wallet';
+import {mintNFT} from '../../utils/wallet';
 import {useSelector} from 'react-redux';
-import {selectLoaded, selectStorage, setStorage} from '../../store/reducers/storage';
-import {useDispatch} from 'react-redux';
-import {selectConnected, selectPKH} from '../../store/reducers/wallet';
+import {selectLoaded, selectStorage} from '../../store/reducers/storage';
 
 const Mint = () => {
     const loaded = useSelector(selectLoaded);
     const storage = useSelector(selectStorage);
-    const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
-    const dispatch = useDispatch();
-    const connected = useSelector(selectConnected);
-    const pkh = useSelector(selectPKH);
-
-    useEffect(() => {
-        if (loaded) {
-            setShow(true);
-        }
-    }, [loaded]);
 
     const submit = async (event) => {
         try {
@@ -33,15 +21,20 @@ const Mint = () => {
             const file = event.target.image.files[0];
 
             const ipfsUrl = await uploadToIpfs(name, description, file);
-            console.log(ipfsUrl);
-
-            const op = await mintNFT(address, ipfsUrl, storage.length);
+            console.log('Uploaded To IPFS!');
+            const token_id = storage.length;
+            const op = await mintNFT(address, ipfsUrl, token_id);
 
             console.log(op);
             setMessage('Minted Successfully!');
 
+            const stor = [...storage];
+            stor.push({
+                token_id: token_id,
+                url: ipfsUrl,
+            });
+
             setLoading(false);
-            func();
         } catch (err) {
             console.log(err);
             setLoading(false);
@@ -49,13 +42,26 @@ const Mint = () => {
         }
     };
 
-    const func = async () => {
-        const nfts = await getNFTs();
-        dispatch(setStorage(nfts));
+    const closeMessage = () => {
+        setMessage('');
     };
 
     return (
         <div className="container">
+            {message && (
+                <div class="position-fixed top-0 end-0 p-3" style={{zIndex: 11}}>
+                    <div
+                        id="liveToast"
+                        class="toast fade show d-flex"
+                        role="alert"
+                        aria-live="assertive"
+                        aria-atomic="true"
+                    >
+                        <div class="toast-body">{message}</div>
+                        <button type="button" class="btn-close me-2 m-auto" onClick={closeMessage}></button>
+                    </div>
+                </div>
+            )}
             <form onSubmit={submit}>
                 <div className="mb-3">
                     <label htmlFor="tokenID" className="form-label">
@@ -101,7 +107,10 @@ const Mint = () => {
                     </label>
                     <input className="form-control" type="file" id="image" accept="image/*" required />
                 </div>
-                <button type="submit" className="btn btn-primary" disabled={loading}>
+                <button type="submit" className="btn btn-primary" disabled={!loaded || loading}>
+                    {loading && (
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    )}
                     Mint
                 </button>
             </form>
