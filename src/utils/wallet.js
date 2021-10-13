@@ -41,11 +41,13 @@ const getContract = async () => {
 };
 
 const mintNFT = async (address, url, token_id) => {
+    await disconnectWallet();
+    await connectWallet();
     const amount = 1;
     const contract = await getContract();
     url = char2Bytes(url);
     const op = await contract.methods.mint(address, amount, MichelsonMap.fromLiteral({'': url}), token_id).send();
-    await op.confirmation(3);
+    return await op.confirmation(3);
 };
 
 const getNFTs = async () => {
