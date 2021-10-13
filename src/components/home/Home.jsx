@@ -18,7 +18,6 @@ const Card = (props) => {
 };
 
 const Home = () => {
-    const [done, setDone] = useState(false);
     const loaded = useSelector(selectLoaded);
     const storage = useSelector(selectStorage);
     const [nfts, setNfts] = useState([]);
@@ -35,12 +34,11 @@ const Home = () => {
                     token.name = data.name;
                     token.description = data.description;
                     if (data.artifactUri) token.img = 'https://ipfs.io/ipfs/' + data.artifactUri.slice(7);
-                    console.log(token);
                     tokens.push(token);
                 }
             }
             setNfts(tokens);
-            setDone(true);
+            console.log('storage set!');
         };
         if (loaded) {
             func();

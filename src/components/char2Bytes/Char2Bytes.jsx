@@ -7,7 +7,6 @@ const Char2Bytes = () => {
     const [copied, setCopied] = useState(false);
 
     const onChange = (event) => {
-        console.log(event.target.value);
         setInput(event.target.value);
     };
 

@@ -7,7 +7,6 @@ const apiKey =
 const client = new NFTStorage({token: apiKey});
 
 const uploadToIpfs = async (name, description, imgFile) => {
-    console.log(imgFile);
     const metadata = await client.store({
         name: name,
         description: description,
@@ -21,7 +20,6 @@ const uploadToIpfs = async (name, description, imgFile) => {
         thumbnailUri: new File([imgFile], imgFile.name, {type: imgFile.type}),
         creators: ['priyanshu'],
     });
-    console.log(metadata);
     return metadata.url;
 };
 
