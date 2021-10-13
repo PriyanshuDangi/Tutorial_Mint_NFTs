@@ -49,16 +49,16 @@ const Mint = () => {
     return (
         <div className="container">
             {message && (
-                <div class="position-fixed top-0 end-0 p-3" style={{zIndex: 11}}>
+                <div className="position-fixed top-0 end-0 p-3" style={{zIndex: 11}}>
                     <div
                         id="liveToast"
-                        class="toast fade show d-flex"
+                        className="toast fade show d-flex"
                         role="alert"
                         aria-live="assertive"
                         aria-atomic="true"
                     >
-                        <div class="toast-body">{message}</div>
-                        <button type="button" class="btn-close me-2 m-auto" onClick={closeMessage}></button>
+                        <div className="toast-body">{message}</div>
+                        <button type="button" className="btn-close me-2 m-auto" onClick={closeMessage}></button>
                     </div>
                 </div>
             )}
