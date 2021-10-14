@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect} from 'react';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+
+import Mint from './components/mint/Mint.jsx';
+import Home from './components/home/Home.jsx';
+import Char2Bytes from './components/char2Bytes/Char2Bytes.jsx';
+
+// import {getNFTs} from './utils/wallet';
+import Navbar from './components/navbar/Navbar.jsx';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectLoaded, setStorage} from './store/reducers/storage.js';
+
+const App = () => {
+    const loaded = useSelector(selectLoaded);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        try {
+            const func = async () => {
+                // const nfts = await getNFTs(); // will import and uncomment
+                // dispatch(setStorage(nfts));
+            };
+            if (!loaded) {
+                func();
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }, [dispatch, loaded]);
+
+    return (
+        <div>
+            <Router>
+                <Navbar />
+                <Switch>
+                    <Route exact component={Char2Bytes} path="/char2Bytes" />
+                    <Route exact component={Mint} path="/mint" />
+                    <Route exact component={Home} path="/" />
+                </Switch>
+            </Router>
+        </div>
+    );
+};
 
 export default App;
